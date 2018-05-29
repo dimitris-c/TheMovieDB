@@ -39,13 +39,16 @@ class NowPlayingViewModel: NowPlayingViewModelType {
 
     init(with service: MovieDBService) {
         self.service = service
+        let activity = ActivityIndicator()
 
-        self.items = loadTrigger.asObservable()
+        self.items = loadTrigger.asObservable().debug()
             .flatMapLatest { _ in
                 return service.getNowPlaying()
+                    .trackActivity(activity)
             }
             .asDriver(onErrorJustReturn: [])
-        
+
+        isLoading = activity.asDriver()
     }
 
 }

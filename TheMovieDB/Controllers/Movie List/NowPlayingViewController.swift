@@ -44,7 +44,7 @@ class NowPlayingViewController: UIViewController, StoryboardInitializable {
         viewModel.outputs.title.drive(self.rx.title).disposed(by: disposeBag)
 
         // This could be in an extension of UIViewController+Rx
-        let willAppear = self.rx.sentMessage(#selector(UIViewController.viewWillAppear))
+        let willAppear = self.rx.methodInvoked(#selector(UIViewController.viewWillAppear))
             .map { _ in }.take(1).asDriver(onErrorJustReturn: ())
 
         let refresh = refreshControl.rx.controlEvent(.valueChanged).asDriver()
@@ -59,10 +59,21 @@ class NowPlayingViewController: UIViewController, StoryboardInitializable {
             cell.configure(with: model)
         }.disposed(by: disposeBag)
 
+        collectionView.rx.modelSelected(Movie.self).subscribe(onNext: { [weak self] movie in
+            self?.showMovieDetails(movieId: movie.id)
+        }).disposed(by: disposeBag)
+
         viewModel.outputs.isLoading
             .asObservable()
             .bind(to: refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
+    }
+
+    private func showMovieDetails(movieId: Int) {
+        let viewModel = MovieDetailsViewModel(movieId: movieId, service: MovieDBService(session: .shared))
+        let viewController = MovieDetailsViewController.initFromStoryboard()
+        viewController.viewModel = viewModel
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
 }
