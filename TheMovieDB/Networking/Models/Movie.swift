@@ -42,4 +42,16 @@ struct Movie: Decodable {
         self.belongsToCollection = try? container.decode(MovieCollection.self, forKey: .belongsToCollection)
     }
 
+    // TODO: The static base url of the images should be handled in a better way as to load the configuration API
+
+    var posterPathURLString: String {
+        guard let path = posterPath else { return "" }
+        return "https://image.tmdb.org/t/p/w300\(String(describing: path))"
+    }
+
+    var backdropPathURLString: String {
+        guard let path = backdropPath else { return "" }
+        return "https://image.tmdb.org/t/p/w500\(String(describing: path))"
+    }
+
 }

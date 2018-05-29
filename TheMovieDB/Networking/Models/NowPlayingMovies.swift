@@ -19,7 +19,6 @@ struct NowPlayingMovies: Decodable {
     let results: [Movie]
     let totalPages: Int
 
-
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: NowPlayingMoviesKeys.self)
 
