@@ -1,10 +1,10 @@
-# TheMovieDB
+# TheMovieDB - Code Test
 
 A simple app that fetches and shows a list of now playing movies using TheMovieDB API.
 
 # Architecture
 
-The app is made using MVVM pattern alongside with the reactive framework RxSwift. 
+The app is made using MVVM pattern alongside with the reactive framework RxSwift. The app has Unit Tests for most of the classes, due to the timeframe of the code test some classes where not tested.
 
 - RxSwift
 - RxCocoa
@@ -15,6 +15,10 @@ The app is made using MVVM pattern alongside with the reactive framework RxSwift
 - RxTest
 - RxBlocking
 - Mockingjay
+
+# Improvements
+
+With the use of the Coordinator pattern we could have avoid some "ugly" usage of the API Service class, particularly where we push the detail view controller. This would be handled in the Coordinator and we could share the API class with the view models or other coorninators.
 
 # Caveats
 
